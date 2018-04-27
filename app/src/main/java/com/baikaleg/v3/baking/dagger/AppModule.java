@@ -6,7 +6,7 @@ import android.content.Context;
 
 import com.baikaleg.v3.baking.dagger.modules.RecipesModule;
 import com.baikaleg.v3.baking.dagger.scopes.ActivityScoped;
-import com.baikaleg.v3.baking.ui.RecipesActivity;
+import com.baikaleg.v3.baking.ui.recipelist.RecipesActivity;
 
 
 import dagger.Binds;
