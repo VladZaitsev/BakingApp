@@ -1,29 +1,54 @@
 package com.baikaleg.v3.baking.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Parcelable {
+
     @SerializedName("id")
     @Expose
-    private final int id = 0;
+    private int id = 0;
     @SerializedName("name")
     @Expose
-    private final String name = null;
+    private String name = null;
     @SerializedName("ingredients")
     @Expose
-    private final List<Ingredient> ingredients = null;
+    private List<Ingredient> ingredients = null;
     @SerializedName("steps")
     @Expose
-    private final List<Step> steps = null;
+    private List<Step> steps = null;
     @SerializedName("servings")
     @Expose
-    private final int servings = 0;
+    private int servings = 0;
     @SerializedName("image")
     @Expose
-    private final String image = null;
+    private String image = null;
+
+    protected Recipe(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        ingredients = in.createTypedArrayList(Ingredient.CREATOR);
+        steps = in.createTypedArrayList(Step.CREATOR);
+        servings = in.readInt();
+        image = in.readString();
+    }
+
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -47,5 +72,20 @@ public class Recipe {
 
     public String getImage() {
         return image;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeTypedList(ingredients);
+        dest.writeTypedList(steps);
+        dest.writeInt(servings);
+        dest.writeString(image);
     }
 }

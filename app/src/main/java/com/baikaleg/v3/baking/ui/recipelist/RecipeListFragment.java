@@ -1,13 +1,12 @@
 package com.baikaleg.v3.baking.ui.recipelist;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +14,12 @@ import android.view.ViewGroup;
 
 import com.baikaleg.v3.baking.R;
 import com.baikaleg.v3.baking.dagger.scopes.ActivityScoped;
-import com.baikaleg.v3.baking.dagger.scopes.FragmentScoped;
+import com.baikaleg.v3.baking.data.model.Recipe;
 import com.baikaleg.v3.baking.databinding.FragmentRecipeListBinding;
+import com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsActivity;
 import com.baikaleg.v3.baking.ui.recipelist.adapter.RecipesAdapter;
-import com.baikaleg.v3.baking.viewmodel.RecipeListViewModel;
-import com.baikaleg.v3.baking.viewmodel.RecipeListViewModelFactory;
+import com.baikaleg.v3.baking.ui.recipelist.viewmodel.RecipeListViewModel;
+import com.baikaleg.v3.baking.ui.recipelist.viewmodel.RecipeListViewModelFactory;
 
 import javax.inject.Inject;
 
@@ -47,9 +47,10 @@ public class RecipeListFragment extends DaggerFragment implements RecipesNavigat
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_list, container, false);
         setViewParameters();
-        binding.recipesList.setLayoutManager(new GridLayoutManager(getActivity(), columns));
+
         adapter = createAdapter();
         binding.recipesList.setAdapter(adapter);
+        binding.recipesList.setLayoutManager(new GridLayoutManager(getActivity(), columns));
 
         return binding.getRoot();
     }
@@ -62,8 +63,10 @@ public class RecipeListFragment extends DaggerFragment implements RecipesNavigat
     }
 
     @Override
-    public void onClick() {
-
+    public void onClick(Recipe recipe) {
+        Intent intent = new Intent(getActivity(), RecipeDetailsActivity.class);
+        intent.putExtra(RecipeDetailsActivity.EXTRA_RECIPE, recipe);
+        startActivity(intent);
     }
 
     private void subscribeUi(RecipeListViewModel viewModel) {
@@ -85,7 +88,7 @@ public class RecipeListFragment extends DaggerFragment implements RecipesNavigat
 
         int imageWidth = getResources().getDisplayMetrics().widthPixels / columns;
         int imageHeight = (getResources().getDisplayMetrics().heightPixels - actionBarHeight) / rows;
-        return new RecipesAdapter(this, imageWidth, imageHeight);
+        return new RecipesAdapter((RecipesNavigator) this, imageWidth, imageHeight);
     }
 
     private void setViewParameters() {

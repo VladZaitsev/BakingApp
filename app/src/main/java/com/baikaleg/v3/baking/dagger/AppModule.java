@@ -4,9 +4,11 @@ import android.app.Application;
 import android.content.Context;
 
 
-import com.baikaleg.v3.baking.dagger.modules.RecipesModule;
+import com.baikaleg.v3.baking.dagger.modules.RecipeDetailsModule;
+import com.baikaleg.v3.baking.dagger.modules.RecipeListModule;
 import com.baikaleg.v3.baking.dagger.scopes.ActivityScoped;
-import com.baikaleg.v3.baking.ui.recipelist.RecipesActivity;
+import com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsActivity;
+import com.baikaleg.v3.baking.ui.recipelist.RecipeListActivity;
 
 
 import dagger.Binds;
@@ -20,6 +22,10 @@ public interface AppModule {
     Context bindContext(Application application);
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = {RecipesModule.class})
-    RecipesActivity moviesActivityInjector();
+    @ContributesAndroidInjector(modules = {RecipeListModule.class})
+    RecipeListActivity moviesActivityInjector();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = {RecipeDetailsModule.class})
+    RecipeDetailsActivity detailsActivityInjector();
 } 

@@ -2,6 +2,7 @@ package com.baikaleg.v3.baking.ui.recipelist.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -17,10 +18,11 @@ import java.util.List;
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
 
     private List<Recipe> recipesList = new ArrayList<>();
+    @Nullable
     private final RecipesNavigator callback;
     private final int viewHeight, viewWidth;
 
-    public RecipesAdapter(RecipesNavigator callback, int viewWidth, int viewHeight) {
+    public RecipesAdapter(@Nullable RecipesNavigator callback, int viewWidth, int viewHeight) {
         this.callback = callback;
         this.viewHeight = viewHeight;
         this.viewWidth = viewWidth;
@@ -32,8 +34,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
         ItemRecipesBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_recipes,
                         parent, false);
-        binding.setCallback(callback);
         binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(viewWidth, viewHeight));
+        binding.setCallback(callback);
         return new RecipesViewHolder(binding);
     }
 

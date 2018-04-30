@@ -1,7 +1,8 @@
-package com.baikaleg.v3.baking.viewmodel;
+package com.baikaleg.v3.baking.ui.recipelist.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.baikaleg.v3.baking.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.baking.data.Repository;
@@ -10,13 +11,11 @@ import com.baikaleg.v3.baking.rx.SchedulersFacade;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 @ActivityScoped
 public class RecipeListViewModel extends ViewModel {
-
+    private final static String TAG = RecipeListViewModel.class.getSimpleName();
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     private final MutableLiveData<List<Recipe>> response = new MutableLiveData<>();
@@ -45,6 +44,6 @@ public class RecipeListViewModel extends ViewModel {
         disposables.add(repository.getRecipes()
                 .subscribeOn(schedulersFacade.io())
                 .observeOn(schedulersFacade.ui())
-                .subscribe(response::setValue));
+                .subscribe(response::setValue, throwable -> Log.i(TAG, throwable.getMessage())));
     }
 }

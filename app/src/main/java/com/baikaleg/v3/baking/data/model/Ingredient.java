@@ -1,29 +1,62 @@
 package com.baikaleg.v3.baking.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.baikaleg.v3.baking.data.MeasureType;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Ingredient {
+public class Ingredient implements Parcelable {
     @SerializedName("quantity")
     @Expose
-    private final double quantity = 0;
+    private double quantity = 0;
     @SerializedName("measure")
     @Expose
-    private final MeasureType measure = null;
+    private String measure = null;
     @SerializedName("ingredient")
     @Expose
-    private final String ingredient = null;
+    private String ingredient = null;
+
+    protected Ingredient(Parcel in) {
+        quantity = in.readDouble();
+        measure = in.readString();
+        ingredient = in.readString();
+    }
+
+    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
+        @Override
+        public Ingredient createFromParcel(Parcel in) {
+            return new Ingredient(in);
+        }
+
+        @Override
+        public Ingredient[] newArray(int size) {
+            return new Ingredient[size];
+        }
+    };
 
     public double getQuantity() {
         return quantity;
     }
 
-    public MeasureType getMeasure() {
+    public String getMeasure() {
         return measure;
     }
 
     public String getIngredient() {
         return ingredient;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(quantity);
+        dest.writeString(measure);
+        dest.writeString(ingredient);
     }
 }

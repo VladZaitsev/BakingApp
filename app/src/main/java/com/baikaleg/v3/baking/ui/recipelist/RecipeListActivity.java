@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 
 @ActivityScoped
-public class RecipesActivity extends DaggerAppCompatActivity {
+public class RecipeListActivity extends DaggerAppCompatActivity {
 
     @Inject
     RecipeListFragment fragment;
@@ -20,7 +20,7 @@ public class RecipesActivity extends DaggerAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recipe_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

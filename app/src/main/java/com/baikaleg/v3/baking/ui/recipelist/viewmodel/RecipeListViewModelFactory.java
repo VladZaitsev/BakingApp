@@ -1,4 +1,4 @@
-package com.baikaleg.v3.baking.viewmodel;
+package com.baikaleg.v3.baking.ui.recipelist.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
