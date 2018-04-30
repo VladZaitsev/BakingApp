@@ -17,7 +17,7 @@ import com.baikaleg.v3.baking.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.baking.data.model.Recipe;
 import com.baikaleg.v3.baking.databinding.FragmentRecipeListBinding;
 import com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsActivity;
-import com.baikaleg.v3.baking.ui.recipelist.adapter.RecipesAdapter;
+import com.baikaleg.v3.baking.ui.recipelist.adapter.RecipesViewAdapter;
 import com.baikaleg.v3.baking.ui.recipelist.viewmodel.RecipeListViewModel;
 import com.baikaleg.v3.baking.ui.recipelist.viewmodel.RecipeListViewModelFactory;
 
@@ -29,10 +29,10 @@ import dagger.android.support.DaggerFragment;
  * A placeholder fragment containing a simple view.
  */
 @ActivityScoped
-public class RecipeListFragment extends DaggerFragment implements RecipesNavigator {
+public class RecipeListFragment extends DaggerFragment implements RecipeNavigator {
 
     private FragmentRecipeListBinding binding;
-    private RecipesAdapter adapter;
+    private RecipesViewAdapter adapter;
     private int rows, columns;
 
     @Inject
@@ -51,7 +51,6 @@ public class RecipeListFragment extends DaggerFragment implements RecipesNavigat
         adapter = createAdapter();
         binding.recipesList.setAdapter(adapter);
         binding.recipesList.setLayoutManager(new GridLayoutManager(getActivity(), columns));
-
         return binding.getRoot();
     }
 
@@ -81,14 +80,14 @@ public class RecipeListFragment extends DaggerFragment implements RecipesNavigat
         });
     }
 
-    private RecipesAdapter createAdapter() {
+    private RecipesViewAdapter createAdapter() {
         TypedValue tv = new TypedValue();
         int actionBarHeight = getActivity().getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)
                 ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics()) : 0;
 
         int imageWidth = getResources().getDisplayMetrics().widthPixels / columns;
         int imageHeight = (getResources().getDisplayMetrics().heightPixels - actionBarHeight) / rows;
-        return new RecipesAdapter((RecipesNavigator) this, imageWidth, imageHeight);
+        return new RecipesViewAdapter((RecipeNavigator) this, imageWidth, imageHeight);
     }
 
     private void setViewParameters() {

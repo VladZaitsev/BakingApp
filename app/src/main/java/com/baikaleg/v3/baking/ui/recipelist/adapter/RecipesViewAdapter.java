@@ -9,20 +9,20 @@ import android.view.ViewGroup;
 
 import com.baikaleg.v3.baking.R;
 import com.baikaleg.v3.baking.data.model.Recipe;
-import com.baikaleg.v3.baking.databinding.ItemRecipesBinding;
-import com.baikaleg.v3.baking.ui.recipelist.RecipesNavigator;
+import com.baikaleg.v3.baking.databinding.ItemRecipeViewBinding;
+import com.baikaleg.v3.baking.ui.recipelist.RecipeNavigator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipesAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
+public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.RecipesViewHolder> {
 
     private List<Recipe> recipesList = new ArrayList<>();
     @Nullable
-    private final RecipesNavigator callback;
+    private final RecipeNavigator callback;
     private final int viewHeight, viewWidth;
 
-    public RecipesAdapter(@Nullable RecipesNavigator callback, int viewWidth, int viewHeight) {
+    public RecipesViewAdapter(@Nullable RecipeNavigator callback, int viewWidth, int viewHeight) {
         this.callback = callback;
         this.viewHeight = viewHeight;
         this.viewWidth = viewWidth;
@@ -31,8 +31,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
     @NonNull
     @Override
     public RecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemRecipesBinding binding = DataBindingUtil
-                .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_recipes,
+        ItemRecipeViewBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_recipe_view,
                         parent, false);
         binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(viewWidth, viewHeight));
         binding.setCallback(callback);
@@ -54,5 +54,16 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
         recipesList.clear();
         recipesList.addAll(list);
         notifyDataSetChanged();
+    }
+
+
+    class RecipesViewHolder extends RecyclerView.ViewHolder {
+
+        final ItemRecipeViewBinding binding;
+
+        RecipesViewHolder(ItemRecipeViewBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
     }
 }

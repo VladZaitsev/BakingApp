@@ -11,7 +11,7 @@
 
         <variable
             name="callback"
-            type="com.baikaleg.v3.baking.ui.recipelist.RecipesNavigator" />
+            type="com.baikaleg.v3.baking.ui.recipelist.RecipeNavigator" />
     </data>
 
 
