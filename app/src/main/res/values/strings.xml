@@ -6,4 +6,5 @@
     <!-- content descriptions-->
     <string name="cd_recipe_image">Recipe image</string>
     <string name="title_activity_recipe_details">RecipeDetailsActivity</string>
+    <string name="title_activity_step_details">StepDetailsActivity</string>
 </resources>

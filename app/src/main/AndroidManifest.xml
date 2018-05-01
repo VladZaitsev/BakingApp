@@ -25,6 +25,10 @@
         <activity
             android:name=".ui.recipedetails.RecipeDetailsActivity"
             android:label="@string/title_activity_recipe_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.recipedetails.StepDetailsActivity"
+            android:label="@string/title_activity_step_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

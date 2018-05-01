@@ -1,6 +1,7 @@
 package com.baikaleg.v3.baking.ui.recipedetails;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -67,7 +68,7 @@ public class RecipeDetailsFragment extends DaggerFragment implements StepNavigat
                 if (count == 0) {
                     binding.recipeDetailsItemIngredientsContent.setVisibility(View.VISIBLE);
                     binding.recipeDetailsItemIngredientsHeader.setVisibility(View.INVISIBLE);
-                    if(ingredientLayoutHeight!=0){
+                    if (ingredientLayoutHeight != 0) {
                         binding.recipeDetailsItemIngredientsContainer.setLayoutParams(
                                 new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ingredientLayoutHeight));
                     }
@@ -75,12 +76,11 @@ public class RecipeDetailsFragment extends DaggerFragment implements StepNavigat
                     binding.recipeDetailsItemIngredientsContent.setVisibility(View.INVISIBLE);
                     binding.recipeDetailsItemIngredientsHeader.setVisibility(View.VISIBLE);
 
-                    if(ingredientLayoutHeight - count >60){
+                    if (ingredientLayoutHeight - count > 60) {
                         binding.recipeDetailsItemIngredientsContainer.setLayoutParams(
-                                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ingredientLayoutHeight-count));
+                                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ingredientLayoutHeight - count));
                     }
                 }
-                Log.i("scro;", String.valueOf(count));
             }
 
             @Override
@@ -101,6 +101,9 @@ public class RecipeDetailsFragment extends DaggerFragment implements StepNavigat
 
     @Override
     public void onClick(Step step) {
-        Log.i("scro;", step.toString());
+        Intent intent = new Intent(getActivity(), StepDetailsActivity.class);
+        intent.putExtra(StepDetailsActivity.EXTRA_RECIPE, recipe);
+        intent.putExtra(StepDetailsActivity.EXTRA_SELECTED, step.getId());
+        startActivity(intent);
     }
 }

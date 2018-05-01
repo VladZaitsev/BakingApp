@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsFragment"
+    tools:showIn="@layout/activity_recipe_details">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.baikaleg.v3.baking.ui.recipedetails.viewmodel.RecipeDetailsViewModel" />
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:id="@+id/recipe_details_item_ingredients_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/step_background">
+
+            <TextView
+                android:id="@+id/recipe_details_item_ingredients_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/item_horizontal_margin"
+                android:text="INGREDIENTS"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:id="@+id/recipe_details_item_ingredients_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/item_horizontal_margin"
+                app:ingredients="@{viewModel.ingredients}" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/recipe_details_item_steps_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recipe_details_item_ingredients_container"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/item_horizontal_margin"
+            android:text="STEPS"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recipe_details_item_steps_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/recipe_details_item_steps_header"
+            app:steps="@{viewModel.steps}" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:id="@+id/recipe_details_steps_layout"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/item_step_details_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="MEDIA PLAYER" />
+
+        <TextView
+            android:id="@+id/item_step_details_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/item_step_details_player"
+            android:scrollbars="vertical"
+            android:text="description" />
+
+    </RelativeLayout>
+</LinearLayout>
+
+</layout>
+
