@@ -5,6 +5,7 @@ import com.baikaleg.v3.baking.dagger.scopes.FragmentScoped;
 import com.baikaleg.v3.baking.data.model.Recipe;
 import com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsActivity;
 import com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsFragment;
+import com.baikaleg.v3.baking.ui.recipedetails.StepDetailsFragment;
 import com.baikaleg.v3.baking.ui.recipedetails.viewmodel.RecipeDetailsViewModelFactory;
 
 import dagger.Module;
@@ -23,6 +24,10 @@ public interface RecipeDetailsModule {
     @FragmentScoped
     @ContributesAndroidInjector
     RecipeDetailsFragment recipeDetailsFragment();
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    StepDetailsFragment stepDetailsFragment();
 
     @ActivityScoped
     @Provides

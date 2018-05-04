@@ -32,5 +32,10 @@ public class RecipeDetailsViewModel extends ViewModel {
 
     public void setSelected(int selected) {
         this.selected.set(selected);
+        this.selected.notifyChange();
+    }
+
+    public int getSelected() {
+        return selected.get();
     }
 }

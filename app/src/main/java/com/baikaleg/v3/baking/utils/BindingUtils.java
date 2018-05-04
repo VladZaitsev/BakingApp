@@ -2,7 +2,6 @@ package com.baikaleg.v3.baking.utils;
 
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -11,7 +10,6 @@ import android.widget.LinearLayout;
 import com.baikaleg.v3.baking.R;
 import com.baikaleg.v3.baking.data.model.Ingredient;
 import com.baikaleg.v3.baking.data.model.Step;
-import com.baikaleg.v3.baking.ui.recipedetails.adapter.StepsDetailsPagerAdapter;
 import com.baikaleg.v3.baking.ui.recipedetails.adapter.StepsViewAdapter;
 import com.baikaleg.v3.baking.ui.recipedetails.subview.IngredientView;
 import com.squareup.picasso.Picasso;
@@ -41,26 +39,16 @@ public class BindingUtils {
         for (int i = 0; i < ingredients.size(); i++) {
             IngredientView ingredientView = new IngredientView(layout.getContext());
             ingredientView.setIngredient(ingredients.get(i));
-            ((LinearLayout)layout).addView(ingredientView);
+            ((LinearLayout) layout).addView(ingredientView);
         }
     }
 
     @SuppressWarnings("unchecked")
     @BindingAdapter("app:steps")
     public static void showSteps(RecyclerView recyclerView, List<Step> steps) {
-        StepsViewAdapter adapter = ( StepsViewAdapter) recyclerView.getAdapter();
+        StepsViewAdapter adapter = (StepsViewAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.refreshAdapter(steps);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @BindingAdapter({"app:steps", "app:selected"})
-    public static void showSteps(ViewPager pager, List<Step> steps, int selected) {
-        StepsDetailsPagerAdapter adapter = (StepsDetailsPagerAdapter) pager.getAdapter();
-        if (adapter != null) {
-            adapter.refreshAdapter(steps);
-            pager.setCurrentItem(selected);
         }
     }
 }
