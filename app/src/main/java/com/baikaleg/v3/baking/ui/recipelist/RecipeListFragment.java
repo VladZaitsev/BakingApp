@@ -1,7 +1,10 @@
 package com.baikaleg.v3.baking.ui.recipelist;
 
+import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -20,6 +23,12 @@ import com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsActivity;
 import com.baikaleg.v3.baking.ui.recipelist.adapter.RecipesViewAdapter;
 import com.baikaleg.v3.baking.ui.recipelist.viewmodel.RecipeListViewModel;
 import com.baikaleg.v3.baking.ui.recipelist.viewmodel.RecipeListViewModelFactory;
+import com.baikaleg.v3.baking.utils.Constants;
+import com.baikaleg.v3.baking.widget.RecipeWidgetProvider;
+import com.google.gson.Gson;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -65,6 +74,9 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
     public void onClick(Recipe recipe) {
         Intent intent = new Intent(getActivity(), RecipeDetailsActivity.class);
         intent.putExtra(RecipeDetailsActivity.EXTRA_RECIPE, recipe);
+
+        saveToPref(recipe);
+
         startActivity(intent);
     }
 
@@ -97,6 +109,20 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
         } else if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             rows = getResources().getInteger(R.integer.rows_landscape);
             columns = getResources().getInteger(R.integer.columns_landscape);
+        }
+    }
+
+    private void saveToPref(Recipe recipe) {
+        SharedPreferences sp = getActivity().getSharedPreferences(
+                Constants.SP, getContext().MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(recipe);
+        sp.edit().putString(Constants.RECIPE_PREF, json).apply();
+        ComponentName widget = new ComponentName(getActivity(), RecipeWidgetProvider.class);
+        int[] appWidgetIds = AppWidgetManager.getInstance(getActivity().getApplicationContext()).getAppWidgetIds(widget);
+        for (int id : appWidgetIds) {
+            RecipeWidgetProvider.updateWidget(getContext(), AppWidgetManager.getInstance(getActivity()), sp, id);
         }
     }
 }
