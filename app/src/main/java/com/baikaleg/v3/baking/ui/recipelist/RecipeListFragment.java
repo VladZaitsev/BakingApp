@@ -8,7 +8,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.baikaleg.v3.baking.R;
+import com.baikaleg.v3.baking.RecipeIdlingResource;
 import com.baikaleg.v3.baking.dagger.scopes.ActivityScoped;
 import com.baikaleg.v3.baking.data.model.Recipe;
 import com.baikaleg.v3.baking.databinding.FragmentRecipeListBinding;
@@ -27,22 +31,18 @@ import com.baikaleg.v3.baking.utils.Constants;
 import com.baikaleg.v3.baking.widget.RecipeWidgetProvider;
 import com.google.gson.Gson;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 @ActivityScoped
 public class RecipeListFragment extends DaggerFragment implements RecipeNavigator {
 
     private FragmentRecipeListBinding binding;
     private RecipesViewAdapter adapter;
     private int rows, columns;
+    private RecipeListViewModel viewModel;
+    private RecipeIdlingResource idlingResource;
 
     @Inject
     RecipeListViewModelFactory viewModelFactory;
@@ -66,8 +66,8 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final RecipeListViewModel viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeListViewModel.class);
-        subscribeUi(viewModel);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeListViewModel.class);
+        subscribeUI();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
         startActivity(intent);
     }
 
-    private void subscribeUi(RecipeListViewModel viewModel) {
+    private void subscribeUI() {
         viewModel.getRecipes().observe(this, recipes -> {
             if (recipes != null) {
                 binding.setIsLoading(false);
@@ -124,5 +124,15 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
         for (int id : appWidgetIds) {
             RecipeWidgetProvider.updateWidget(getContext(), AppWidgetManager.getInstance(getActivity()), sp, id);
         }
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (idlingResource == null) {
+            idlingResource = new RecipeIdlingResource();
+            viewModel.setIdlingResource(idlingResource);
+        }
+        return idlingResource;
     }
 }

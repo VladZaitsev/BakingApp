@@ -3,14 +3,13 @@ package com.baikaleg.v3.baking.ui.recipedetails;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.baikaleg.v3.baking.R;
 import com.baikaleg.v3.baking.data.model.Recipe;
 import com.baikaleg.v3.baking.databinding.ActivityStepDetailsBinding;
-import com.baikaleg.v3.baking.ui.recipedetails.viewmodel.RecipeDetailsViewModel;
-import com.baikaleg.v3.baking.ui.recipedetails.viewmodel.RecipeDetailsViewModelFactory;
+import com.baikaleg.v3.baking.ui.recipedetails.viewmodel.StepDetailsViewModel;
 
 import javax.inject.Inject;
 
@@ -28,10 +27,7 @@ public class StepDetailsActivity extends DaggerAppCompatActivity {
     int selected;
 
     private int currentStepNum;
-    private RecipeDetailsViewModel viewModel;
-
-    @Inject
-    RecipeDetailsViewModelFactory viewModelFactory;
+    StepDetailsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,49 +40,44 @@ public class StepDetailsActivity extends DaggerAppCompatActivity {
         } else {
             currentStepNum = selected;
         }
-
-        StepDetailsFragment stepDetailsFragment = (StepDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.activity_step_content_layout);
-        if(stepDetailsFragment==null){
-            stepDetailsFragment = StepDetailsFragment.newInstance(recipe.getSteps().get(currentStepNum));
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.activity_step_content_layout, stepDetailsFragment)
-                    .commit();
-        }
-
         ActivityStepDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_step_details);
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeDetailsViewModel.class);
-        viewModel.setSelected(currentStepNum);
-        viewModel.setRecipe(recipe);
-        binding.setViewModel(viewModel);
+        viewModel = ViewModelProviders.of(this).get(StepDetailsViewModel.class);
+        viewModel.getStep().observe(this, step -> {
+            StepDetailsFragment stepDetailsFragment = StepDetailsFragment.newInstance(step);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.activity_step_content_layout, stepDetailsFragment)
+                    .commit();
+            if (currentStepNum == 0) {
+                binding.activityStepPrevBtn.setVisibility(View.GONE);
+            } else if (currentStepNum == recipe.getSteps().size()-1) {
+                binding.activityStepNextBtn.setVisibility(View.GONE);
+            } else {
+                binding.activityStepPrevBtn.setVisibility(View.VISIBLE);
+                binding.activityStepNextBtn.setVisibility(View.VISIBLE);
+            }
+        });
+        viewModel.setStep(recipe.getSteps().get(currentStepNum));
+
         binding.setCallback(new StepsNavigationCallback() {
             @Override
             public void onPrevClick() {
                 currentStepNum = currentStepNum - 1;
-                viewModel.setSelected(currentStepNum);
-                changeStepFragment();
+                viewModel.setStep(recipe.getSteps().get(currentStepNum));
             }
 
             @Override
             public void onNextClick() {
                 currentStepNum = currentStepNum + 1;
-                viewModel.setSelected(currentStepNum);
-                changeStepFragment();
+                viewModel.setStep(recipe.getSteps().get(currentStepNum));
             }
         });
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(selected_key, viewModel.getSelected());
+        outState.putInt(selected_key, currentStepNum);
         super.onSaveInstanceState(outState);
-    }
-
-    private void changeStepFragment() {
-        StepDetailsFragment stepDetailsFragment = StepDetailsFragment.newInstance(recipe.getSteps().get(currentStepNum));
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.activity_step_content_layout, stepDetailsFragment)
-                    .commit();
     }
 
     public interface StepsNavigationCallback {

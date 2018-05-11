@@ -23,16 +23,10 @@ public interface StepDetailsModule {
     @Provides
     @ActivityScoped
     static int provideSelected(StepDetailsActivity activity) {
-        return activity.getIntent().getIntExtra(StepDetailsActivity.EXTRA_SELECTED,0);
+        return activity.getIntent().getIntExtra(StepDetailsActivity.EXTRA_SELECTED, 0);
     }
 
     @FragmentScoped
     @ContributesAndroidInjector
     StepDetailsFragment stepDetailsFragment();
-
-    @ActivityScoped
-    @Provides
-    static RecipeDetailsViewModelFactory provideDetailsListViewModelFactory() {
-        return new RecipeDetailsViewModelFactory();
-    }
 }

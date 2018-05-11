@@ -3,7 +3,6 @@ package com.baikaleg.v3.baking.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.baikaleg.v3.baking.data.MeasureType;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,6 +16,12 @@ public class Ingredient implements Parcelable {
     @SerializedName("ingredient")
     @Expose
     private String ingredient = null;
+
+    public Ingredient(double quantity, String measure, String ingredient) {
+        this.quantity = quantity;
+        this.measure = measure;
+        this.ingredient = ingredient;
+    }
 
     protected Ingredient(Parcel in) {
         quantity = in.readDouble();

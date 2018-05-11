@@ -34,7 +34,7 @@ public class RecipeWidgetFactory implements RemoteViewsFactory {
     @Override
     public void onDataSetChanged() {
         data.clear();
-        data = recipe.getIngredients();
+        data.addAll(recipe.getIngredients()) ;
     }
 
     @Override

@@ -32,7 +32,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/item_horizontal_margin"
-                android:text="INGREDIENTS"
+                android:text="@string/ingredients"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:visibility="invisible" />
 
@@ -54,7 +54,7 @@
             android:layout_below="@id/recipe_details_item_ingredients_container"
             android:layout_centerHorizontal="true"
             android:padding="@dimen/item_horizontal_margin"
-            android:text="STEPS"
+            android:text="@string/steps"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
         <android.support.v7.widget.RecyclerView

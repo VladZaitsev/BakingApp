@@ -18,8 +18,6 @@ public class RecipeDetailsViewModel extends ViewModel {
 
     public final ObservableList<Ingredient> ingredients = new ObservableArrayList<>();
 
-    public final ObservableField<Integer> selected = new ObservableField<>();
-
     public void setRecipe(Recipe recipe) {
         recipeObservable.set(recipe);
 
@@ -28,14 +26,5 @@ public class RecipeDetailsViewModel extends ViewModel {
 
         ingredients.clear();
         ingredients.addAll(recipe.getIngredients());
-    }
-
-    public void setSelected(int selected) {
-        this.selected.set(selected);
-        this.selected.notifyChange();
-    }
-
-    public int getSelected() {
-        return selected.get();
     }
 }

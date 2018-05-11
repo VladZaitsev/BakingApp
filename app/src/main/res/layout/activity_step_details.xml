@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.baikaleg.v3.baking.ui.recipedetails.StepDetailsActivity">
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="callback"
             type="com.baikaleg.v3.baking.ui.recipedetails.StepDetailsActivity.StepsNavigationCallback" />
-
-        <variable
-            name="viewModel"
-            type="com.baikaleg.v3.baking.ui.recipedetails.viewmodel.RecipeDetailsViewModel" />
     </data>
 
     <RelativeLayout
@@ -39,18 +32,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/previous"
                 android:onClick="@{()->callback.onPrevClick()}"
-                android:visibility="@{viewModel.selected!=0? View.VISIBLE : View.GONE}" />
+                android:text="@string/previous" />
 
             <Button
                 android:id="@+id/activity_step_next_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/next"
                 android:onClick="@{()->callback.onNextClick()}"
-                android:visibility="@{viewModel.selected!=viewModel.steps.size()-1? View.VISIBLE : View.GONE}" />
+                android:text="@string/next" />
         </LinearLayout>
     </RelativeLayout>
 

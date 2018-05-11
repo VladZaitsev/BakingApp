@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.baikaleg.v3.baking.data.model.Step;
 import com.baikaleg.v3.baking.databinding.FragmentStepDetailsBinding;
-import com.baikaleg.v3.baking.ui.recipedetails.viewmodel.StepDetailsViewModel;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -42,7 +39,6 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
     private SimpleExoPlayer exoPlayer;
     private FragmentStepDetailsBinding binding;
-    private Step step;
     private long position;
 
     public static StepDetailsFragment newInstance(Step step) {
@@ -57,29 +53,27 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.containsKey(minute_key)) {
-            position=savedInstanceState.getLong(minute_key);
+            position = savedInstanceState.getLong(minute_key);
         }
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentStepDetailsBinding.inflate(inflater, container, false);
-        final StepDetailsViewModel viewModel = new StepDetailsViewModel();
-
         if (getArguments() != null) {
-            step = getArguments().getParcelable(arg_step);
+            Step step = getArguments().getParcelable(arg_step);
             if (step != null) {
-                viewModel.setStep(step);
-                binding.setViewModel(viewModel);
-                initializePlayer();
+                binding.setStep(step);
+                initializePlayer(step.getVideoURL());
             }
         }
         return binding.getRoot();
     }
 
-    public void initializePlayer() {
-            if (exoPlayer == null) {
+    public void initializePlayer(String url) {
+        if (exoPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
@@ -89,12 +83,14 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
             exoPlayer.addListener(this);
 
             // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(getContext(), "ClassicalMusicQuiz");
-            MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(step.getVideoURL()), new DefaultDataSourceFactory(
-                    getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            exoPlayer.prepare(mediaSource);
-            exoPlayer.setPlayWhenReady(true);
-            exoPlayer.seekTo(position);
+            if (url != null) {
+                String userAgent = Util.getUserAgent(getContext(), "ClassicalMusicQuiz");
+                MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(url), new DefaultDataSourceFactory(
+                        getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+                exoPlayer.prepare(mediaSource);
+                exoPlayer.setPlayWhenReady(true);
+                exoPlayer.seekTo(position);
+            }
         }
     }
 

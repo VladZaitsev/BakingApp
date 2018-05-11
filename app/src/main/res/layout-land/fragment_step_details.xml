@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.baikaleg.v3.baking.ui.recipedetails.viewmodel.StepDetailsViewModel" />
+            name="step"
+            type="com.baikaleg.v3.baking.data.model.Step" />
     </data>
 
     <RelativeLayout
@@ -24,6 +24,6 @@
             android:scrollbars="vertical"
             android:visibility="gone"
             android:layout_below="@id/item_step_details_player"
-            android:text="@{viewModel.description}" />
+            android:text="@{step.description}" />
     </RelativeLayout>
 </layout>

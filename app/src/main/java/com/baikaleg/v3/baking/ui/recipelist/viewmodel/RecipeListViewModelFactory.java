@@ -4,9 +4,11 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
+import com.baikaleg.v3.baking.RecipeIdlingResource;
 import com.baikaleg.v3.baking.data.Repository;
 import com.baikaleg.v3.baking.rx.SchedulersFacade;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 public class RecipeListViewModelFactory implements ViewModelProvider.Factory {

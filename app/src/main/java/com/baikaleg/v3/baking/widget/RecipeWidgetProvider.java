@@ -17,8 +17,6 @@ import com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsActivity;
 import com.baikaleg.v3.baking.utils.Constants;
 import com.google.gson.Gson;
 
-import java.util.Arrays;
-
 public class RecipeWidgetProvider extends AppWidgetProvider {
     public final static String WIDGET_RECIPE_EXTRA = "widget_recipe_extra";
     final String LOG_TAG = "myLogs";
@@ -34,7 +32,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         SharedPreferences sp = context.getSharedPreferences(
-                Constants.SP, context.MODE_PRIVATE);
+                Constants.SP, Context.MODE_PRIVATE);
         for (int id : appWidgetIds) {
             updateWidget(context, appWidgetManager, sp, id);
         }
@@ -43,7 +41,10 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
-        Log.d(LOG_TAG, "onDeleted " + Arrays.toString(appWidgetIds));
+        SharedPreferences.Editor editor = context.getSharedPreferences(
+                Constants.SP, Context.MODE_PRIVATE).edit();
+        editor.remove(Constants.RECIPE_PREF);
+        editor.apply();
     }
 
     @Override
@@ -61,7 +62,12 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
         RemoteViews rv = new RemoteViews(context.getPackageName(),
                 R.layout.recipe_widget);
-        rv.setTextViewText(R.id.recipe_widget_name, recipe.getName());
+        if (recipe == null) {
+            rv.setTextViewText(R.id.recipe_widget_name, context.getString(R.string.app_name));
+            return;
+        } else {
+            rv.setTextViewText(R.id.recipe_widget_name, recipe.getName());
+        }
 
         Intent intent = new Intent(context, RecipeDetailsActivity.class);
         intent.putExtra(RecipeDetailsActivity.EXTRA_RECIPE, recipe);
