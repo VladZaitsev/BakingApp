@@ -1,15 +1,26 @@
 <resources>
     <string name="app_name">BakingApp</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">BakingApp</string>
 
     <!-- content descriptions-->
     <string name="cd_recipe_image">Recipe image</string>
-    <string name="title_activity_recipe_details">RecipeDetailsActivity</string>
-    <string name="title_activity_step_details">StepDetailsActivity</string>
+    <string name="cd_next">Next</string>
+    <string name="cd_previous">Previous</string>
+    <string name="cd_thumbnail">Thumbnail</string>
+    <string name="cd_persons">Persons</string>
+
+    <!-- buttons names-->
     <string name="previous">PREV</string>
     <string name="next">NEXT</string>
+
+    <!-- messages-->
     <string name="no_internet_msg">No internet</string>
+
+    <!-- titles-->
     <string name="ingredients">INGREDIENTS</string>
     <string name="steps">STEPS</string>
+
+    <!-- default strings-->
+    <string name="no_description">No description for step</string>
+
 </resources>

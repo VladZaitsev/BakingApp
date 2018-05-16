@@ -21,7 +21,7 @@ public class StepsViewAdapter extends RecyclerView.Adapter<StepsViewAdapter.Step
     @Nullable
     private StepNavigator callback;
 
-    public StepsViewAdapter(StepNavigator callback) {
+    public StepsViewAdapter(@Nullable StepNavigator callback) {
         this.callback = callback;
     }
 

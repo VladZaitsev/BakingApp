@@ -17,31 +17,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:orientation="horizontal">
 
         <RelativeLayout
+            android:id="@+id/recipe_details_item_ingredients_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <RelativeLayout
-                android:id="@+id/recipe_details_item_ingredients_container"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/recipe_details_item_ingredients_header"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/step_background">
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/item_horizontal_margin"
+                android:text="@string/ingredients"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
-                <TextView
-                    android:id="@+id/recipe_details_item_ingredients_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:padding="@dimen/item_horizontal_margin"
-                    android:text="@string/ingredients"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:visibility="invisible" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/recipe_details_item_ingredients_header">
 
                 <LinearLayout
                     android:id="@+id/recipe_details_item_ingredients_content"
@@ -50,14 +46,23 @@
                     android:orientation="vertical"
                     android:padding="@dimen/item_horizontal_margin"
                     app:ingredients="@{viewModel.ingredients}" />
+            </ScrollView>
+        </RelativeLayout>
 
-            </RelativeLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/border" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/recipe_details_item_steps_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/recipe_details_item_ingredients_container"
                 android:layout_centerHorizontal="true"
                 android:padding="@dimen/item_horizontal_margin"
                 android:text="@string/steps"
@@ -72,13 +77,6 @@
                 app:steps="@{viewModel.steps}" />
         </RelativeLayout>
 
-        <FrameLayout
-            android:id="@+id/recipe_details_steps_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-        </FrameLayout>
     </LinearLayout>
-
 </layout>
 

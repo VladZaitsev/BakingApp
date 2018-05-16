@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_list, container, false);
         setViewParameters();
@@ -67,6 +68,7 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeListViewModel.class);
+        binding.setViewModel(viewModel);
         subscribeUI();
     }
 
@@ -81,6 +83,12 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
     }
 
     private void subscribeUI() {
+        binding.moviesRefresh.setColorSchemeColors(
+                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
+        );
+
         viewModel.getRecipes().observe(this, recipes -> {
             if (recipes != null) {
                 binding.setIsLoading(false);
@@ -89,6 +97,16 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
                 binding.setIsLoading(true);
             }
             binding.executePendingBindings();
+        });
+
+        viewModel.isDataLoadingError.observe(this, a -> {
+            if (a) {
+                binding.recipesErrorTxt.setVisibility(View.VISIBLE);
+                binding.recipesList.setVisibility(View.GONE);
+            } else {
+                binding.recipesErrorTxt.setVisibility(View.GONE);
+                binding.recipesList.setVisibility(View.VISIBLE);
+            }
         });
     }
 
@@ -99,7 +117,7 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
 
         int imageWidth = getResources().getDisplayMetrics().widthPixels / columns;
         int imageHeight = (getResources().getDisplayMetrics().heightPixels - actionBarHeight) / rows;
-        return new RecipesViewAdapter((RecipeNavigator) this, imageWidth, imageHeight);
+        return new RecipesViewAdapter(this, imageWidth, imageHeight);
     }
 
     private void setViewParameters() {

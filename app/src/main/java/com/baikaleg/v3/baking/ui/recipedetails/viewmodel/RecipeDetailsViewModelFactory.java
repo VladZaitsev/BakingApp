@@ -4,8 +4,6 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.baikaleg.v3.baking.ui.recipelist.viewmodel.RecipeListViewModel;
-
 import javax.inject.Inject;
 
 public class RecipeDetailsViewModelFactory implements ViewModelProvider.Factory {

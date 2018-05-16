@@ -18,6 +18,8 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:layout_margin="@dimen/item_horizontal_margin"
         android:onClick="@{()->callback.onClick(recipe)}">
 
         <android.support.constraint.ConstraintLayout
@@ -51,35 +53,27 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/item_vertical_margin"
-                    app:srcCompat="@drawable/ic_person" />
+                    app:srcCompat="@drawable/ic_person"
+                    android:contentDescription="@string/cd_persons" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toStartOf="@id/recipe_servings_img"
-                    android:layout_toLeftOf="@id/recipe_servings_img"
                     android:layout_margin="@dimen/item_vertical_margin"
+                    android:layout_toLeftOf="@id/recipe_servings_img"
+                    android:layout_toStartOf="@id/recipe_servings_img"
                     android:text="@{String.valueOf(recipe.servings)}"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
             </RelativeLayout>
 
             <ImageView
+                android:id="@+id/recipe_main_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/cd_recipe_image"
+                android:visibility='@{recipe.image.equals("")?View.GONE:View.VISIBLE}'
                 app:image="@{recipe.image}" />
-
-            <TextView
-                android:id="@+id/no_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="no_image"
-                android:visibility="@{recipe.image==null? View.GONE: View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
 

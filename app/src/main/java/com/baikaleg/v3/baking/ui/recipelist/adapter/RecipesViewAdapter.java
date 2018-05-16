@@ -21,6 +21,7 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
     @Nullable
     private final RecipeNavigator callback;
     private final int viewHeight, viewWidth;
+    private ItemRecipeViewBinding binding;
 
     public RecipesViewAdapter(@Nullable RecipeNavigator callback, int viewWidth, int viewHeight) {
         this.callback = callback;
@@ -31,10 +32,9 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
     @NonNull
     @Override
     public RecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemRecipeViewBinding binding = DataBindingUtil
+        binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_recipe_view,
                         parent, false);
-        binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(viewWidth, viewHeight));
         binding.setCallback(callback);
         return new RecipesViewHolder(binding);
     }
@@ -42,6 +42,9 @@ public class RecipesViewAdapter extends RecyclerView.Adapter<RecipesViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull RecipesViewHolder holder, int position) {
         holder.binding.setRecipe(recipesList.get(position));
+        if (!recipesList.get(position).getImage().equals("")) {
+            binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(viewWidth, viewHeight));
+        }
         holder.binding.executePendingBindings();
     }
 

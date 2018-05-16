@@ -1,7 +1,6 @@
 package com.baikaleg.v3.baking.ui.recipedetails.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
-import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 import android.databinding.ObservableList;

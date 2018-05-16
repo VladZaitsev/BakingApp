@@ -1,6 +1,4 @@
 <resources>
-    <dimen name="recipe_item_min_height">100dp</dimen>
     <dimen name="item_horizontal_margin">8dp</dimen>
     <dimen name="item_vertical_margin">8dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 </resources>

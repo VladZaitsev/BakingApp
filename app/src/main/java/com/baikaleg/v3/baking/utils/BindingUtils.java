@@ -2,6 +2,7 @@ package com.baikaleg.v3.baking.utils;
 
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.baikaleg.v3.baking.data.model.Ingredient;
 import com.baikaleg.v3.baking.data.model.Step;
 import com.baikaleg.v3.baking.ui.recipedetails.adapter.StepsViewAdapter;
 import com.baikaleg.v3.baking.ui.recipedetails.subview.IngredientView;
+import com.baikaleg.v3.baking.ui.recipelist.viewmodel.RecipeListViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -34,12 +36,10 @@ public class BindingUtils {
     @SuppressWarnings("unchecked")
     @BindingAdapter("app:ingredients")
     public static void showIngredients(LinearLayout layout, List<Ingredient> ingredients) {
-       /* StepsViewAdapter adapter = new StepsViewAdapter(ingredients);
-        listView.setAdapter(adapter);*/
         for (int i = 0; i < ingredients.size(); i++) {
             IngredientView ingredientView = new IngredientView(layout.getContext());
             ingredientView.setIngredient(ingredients.get(i));
-            ((LinearLayout) layout).addView(ingredientView);
+            layout.addView(ingredientView);
         }
     }
 
@@ -50,5 +50,10 @@ public class BindingUtils {
         if (adapter != null) {
             adapter.refreshAdapter(steps);
         }
+    }
+
+    @BindingAdapter("app:onRefresh")
+    public static void refreshRecipeList(SwipeRefreshLayout view, final RecipeListViewModel viewModel) {
+        view.setOnRefreshListener(viewModel::loadRecipes);
     }
 }

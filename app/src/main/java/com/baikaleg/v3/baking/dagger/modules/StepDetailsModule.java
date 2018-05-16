@@ -5,7 +5,6 @@ import com.baikaleg.v3.baking.dagger.scopes.FragmentScoped;
 import com.baikaleg.v3.baking.data.model.Recipe;
 import com.baikaleg.v3.baking.ui.recipedetails.StepDetailsActivity;
 import com.baikaleg.v3.baking.ui.recipedetails.StepDetailsFragment;
-import com.baikaleg.v3.baking.ui.recipedetails.viewmodel.RecipeDetailsViewModelFactory;
 
 import dagger.Module;
 import dagger.Provides;

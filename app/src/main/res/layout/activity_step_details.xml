@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.baikaleg.v3.baking.ui.recipedetails.StepDetailsActivity">
 
     <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="count"
+            type="int" />
+
+        <variable
+            name="size"
+            type="int" />
 
         <variable
             name="callback"
@@ -18,7 +29,9 @@
             android:id="@+id/activity_step_content_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/activity_step_nav_layout" />
+            android:layout_above="@id/activity_step_nav_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layout="@layout/fragment_step_details" />
 
         <LinearLayout
             android:id="@+id/activity_step_nav_layout"
@@ -33,7 +46,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="@{()->callback.onPrevClick()}"
-                android:text="@string/previous" />
+                android:text="@string/previous"
+                android:visibility="@{count==0?View.GONE:View.VISIBLE}" />
 
             <Button
                 android:id="@+id/activity_step_next_btn"
@@ -41,9 +55,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="@{()->callback.onNextClick()}"
-                android:text="@string/next" />
+                android:text="@string/next"
+                android:visibility="@{count==size-1?View.GONE:View.VISIBLE}" />
         </LinearLayout>
     </RelativeLayout>
-
-
 </layout>

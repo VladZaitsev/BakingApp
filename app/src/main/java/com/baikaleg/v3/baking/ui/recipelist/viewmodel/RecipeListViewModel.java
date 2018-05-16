@@ -2,7 +2,7 @@ package com.baikaleg.v3.baking.ui.recipelist.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
+import android.databinding.ObservableBoolean;
 
 import com.baikaleg.v3.baking.RecipeIdlingResource;
 import com.baikaleg.v3.baking.dagger.scopes.ActivityScoped;
@@ -18,8 +18,12 @@ import io.reactivex.disposables.CompositeDisposable;
 
 @ActivityScoped
 public class RecipeListViewModel extends ViewModel {
-    private final static String TAG = RecipeListViewModel.class.getSimpleName();
+
     private final CompositeDisposable disposables = new CompositeDisposable();
+
+    public final MutableLiveData<Boolean> isDataLoadingError = new MutableLiveData<>();
+
+    public final ObservableBoolean dataLoading = new ObservableBoolean(false);
 
     private final MutableLiveData<List<Recipe>> response = new MutableLiveData<>();
 
@@ -45,7 +49,8 @@ public class RecipeListViewModel extends ViewModel {
         return response;
     }
 
-    private void loadRecipes() {
+    public void loadRecipes() {
+        dataLoading.set(true);
         if (idlingResource != null) {
             idlingResource.setIdleState(false);
         }
@@ -57,11 +62,14 @@ public class RecipeListViewModel extends ViewModel {
                     if (idlingResource != null) {
                         idlingResource.setIdleState(true);
                     }
+                    isDataLoadingError.setValue(false);
+                    dataLoading.set(false);
                 }, throwable -> {
                     if (idlingResource != null) {
                         idlingResource.setIdleState(true);
                     }
-                    Log.i(TAG, throwable.getMessage());
+                    isDataLoadingError.setValue(true);
+                    dataLoading.set(false);
                 }));
     }
 

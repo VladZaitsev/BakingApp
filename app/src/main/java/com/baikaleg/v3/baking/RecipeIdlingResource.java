@@ -6,8 +6,6 @@ import android.support.test.espresso.IdlingResource;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.inject.Inject;
-
 public class RecipeIdlingResource implements IdlingResource {
 
     @Nullable
