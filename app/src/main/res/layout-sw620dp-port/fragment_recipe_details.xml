@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.baikaleg.v3.baking.ui.recipedetails.RecipeDetailsFragment"
+    tools:showIn="@layout/activity_recipe_details">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.baikaleg.v3.baking.ui.recipedetails.viewmodel.RecipeDetailsViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/recipe_details_item_ingredients_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/item_horizontal_margin"
+            android:text="@string/ingredients"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent=".5" />
+
+        <View
+            android:id="@+id/recipe_details_item_vertical_border"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/border"
+            app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+            app:layout_constraintStart_toEndOf="@+id/recipe_details_item_ingredients_header" />
+
+        <TextView
+            android:id="@+id/recipe_details_item_steps_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/item_horizontal_margin"
+            android:text="@string/steps"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/recipe_details_item_vertical_border"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent=".5" />
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@id/recipe_details_item_ingredients_header"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_item_ingredients_header"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent=".5">
+
+            <LinearLayout
+                android:id="@+id/recipe_details_item_ingredients_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/item_horizontal_margin"
+                app:ingredients="@{viewModel.ingredients}" />
+        </ScrollView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recipe_details_item_steps_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_item_steps_header"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent=".5"
+            app:steps="@{viewModel.steps}" />
+
+        <FrameLayout
+            android:id="@+id/recipe_details_steps_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_item_vertical_border"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="InconsistentLayout" />
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
+

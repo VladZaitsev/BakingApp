@@ -69,6 +69,7 @@ public class RecipeDetailsFragment extends DaggerFragment implements StepNavigat
             StepDetailsFragment stepDetailsFragment = (StepDetailsFragment) getActivity().getSupportFragmentManager()
                     .findFragmentById(R.id.activity_step_content_layout);
             if (stepDetailsFragment == null) {
+                stepDetailsFragment= StepDetailsFragment.newInstance();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.add(R.id.recipe_details_steps_layout, stepDetailsFragment);
                 transaction.commit();

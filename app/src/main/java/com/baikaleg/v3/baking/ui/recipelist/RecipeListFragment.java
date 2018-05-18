@@ -3,6 +3,7 @@ package com.baikaleg.v3.baking.ui.recipelist;
 import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -132,7 +133,7 @@ public class RecipeListFragment extends DaggerFragment implements RecipeNavigato
 
     private void saveToPref(Recipe recipe) {
         SharedPreferences sp = getActivity().getSharedPreferences(
-                Constants.SP, getContext().MODE_PRIVATE);
+                Constants.SP, Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
         String json = gson.toJson(recipe);

@@ -19,12 +19,12 @@ import com.google.gson.Gson;
 
 public class RecipeWidgetProvider extends AppWidgetProvider {
     public final static String WIDGET_RECIPE_EXTRA = "widget_recipe_extra";
-    final String LOG_TAG = "myLogs";
+   private final String TAG = "myLogs";
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        Log.d(LOG_TAG, "onEnabled");
+        Log.d(TAG, "onEnabled");
     }
 
     @Override
@@ -50,7 +50,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
-        Log.d(LOG_TAG, "onDisabled");
+        Log.d(TAG, "onDisabled");
     }
 
 
