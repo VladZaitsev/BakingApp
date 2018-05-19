@@ -17,6 +17,7 @@ import com.baikaleg.v3.baking.R;
 import com.baikaleg.v3.baking.data.model.Step;
 import com.baikaleg.v3.baking.databinding.FragmentStepDetailsBinding;
 import com.baikaleg.v3.baking.ui.recipedetails.viewmodel.StepDetailsViewModel;
+import com.baikaleg.v3.baking.utils.Constants;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -38,13 +39,13 @@ import com.google.android.exoplayer2.util.Util;
 
 public class StepDetailsFragment extends Fragment implements ExoPlayer.EventListener {
     private static final String TAG = StepDetailsFragment.class.getSimpleName();
-    public static final String PLAYER_POSITION = "position";
-    public static final String PLAYER_READY = "ready";
 
     private SimpleExoPlayer exoPlayer;
     private FragmentStepDetailsBinding binding;
+
     private long playerPosition;
-    private boolean playerReady;
+    private boolean playerReady = true;
+    private Step step;
 
     public static StepDetailsFragment newInstance() {
         return new StepDetailsFragment();
@@ -54,11 +55,11 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(PLAYER_POSITION)) {
-                playerPosition = savedInstanceState.getLong(PLAYER_POSITION);
+            if (savedInstanceState.containsKey(Constants.PLAYER_POSITION)) {
+                playerPosition = savedInstanceState.getLong(Constants.PLAYER_POSITION);
             }
-            if (savedInstanceState.containsKey(PLAYER_READY)) {
-                playerReady = savedInstanceState.getBoolean(PLAYER_READY);
+            if (savedInstanceState.containsKey(Constants.PLAYER_READY)) {
+                playerReady = savedInstanceState.getBoolean(Constants.PLAYER_READY);
             }
         }
     }
@@ -70,19 +71,22 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
         StepDetailsViewModel viewModel = ViewModelProviders.of(getActivity()).get(StepDetailsViewModel.class);
         viewModel.getStep().observe(getActivity(), step -> {
+            this.step = step;
+
             if (viewModel.getIsStepChanged()) {
                 playerPosition = 0;
+                playerReady = true;
             }
 
             releasePlayer();
 
             binding.setStep(step);
-            initializePlayer(step);
+            initializePlayer();
         });
         return binding.getRoot();
     }
 
-    public void initializePlayer(Step step) {
+    public void initializePlayer() {
         if (exoPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelection.Factory videoTrackSelectionFactory
@@ -103,7 +107,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
                         new DefaultDataSourceFactory(getContext(), userAgent),
                         new DefaultExtractorsFactory(), null, null);
                 exoPlayer.prepare(mediaSource, false, true);
-                exoPlayer.setPlayWhenReady(true);
+                exoPlayer.setPlayWhenReady(playerReady);
                 exoPlayer.seekTo(playerPosition);
 
                 binding.itemStepDetailsPlayer.setVisibility(View.VISIBLE);
@@ -132,28 +136,23 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         playerPosition = exoPlayer.getCurrentPosition();
         playerReady = exoPlayer.getPlayWhenReady();
+        releasePlayer();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        exoPlayer.setPlayWhenReady(true);
+        initializePlayer();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putLong(PLAYER_POSITION, playerPosition);
-        outState.putBoolean(PLAYER_READY, playerReady);
+        outState.putLong(Constants.PLAYER_POSITION, playerPosition);
+        outState.putBoolean(Constants.PLAYER_READY, playerReady);
         super.onSaveInstanceState(outState);
     }
 
